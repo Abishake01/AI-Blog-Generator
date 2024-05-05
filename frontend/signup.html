@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>signup</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css">
+
+    <style>
+        #login{
+            
+            border:1px solid black;
+            width: 400px;
+            height: 600px;
+            color: rgb(0, 162, 0);
+            border-radius: 20px;
+            box-shadow: 0px 0px 20px rgba(0,0,0,0.75);
+        }
+        form{
+            display: block;
+            box-sizing: border-box;
+            padding: 40px;
+            width: 100%;
+             flex-direction: column;
+            display: flex;
+            gap: 2px;
+        }
+        #name{
+            font-weight: normal;
+            font-size: 24px;
+            text-shadow: 0px 0px 2px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+        }
+        label{
+            color: rgba(12, 180, 20, 0.8);
+            text-transform: uppercase;
+            font-size: 15px;
+            letter-spacing: 2px;
+           
+        }
+        input{
+            background: rgb(173, 208, 255);
+            height: 40px;
+            line-height: 40px;
+            border-radius: 10px; 
+        
+            
+
+        }
+        button{
+            background: rgb(26, 204, 118);
+            height: 40px;
+            line-height: 40px;
+            border-radius: 10px; 
+            box-shadow: 0px 0px 5px rgba(6, 124, 2, 0.3);
+            color: white;
+        }
+             
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+     <!--Nav Bar-->
+     
+     <nav class="bg-green-600 p-4 text-white flex justify-between ">
+        <div >
+            <h1 class="md:text-3xl md:font-bold text-xl ">AI Blog Generator</h1>
+        </div>
+        <div>
+            <a href="#" class="text-white hover:underline">login |</a>
+            <a href="#" class="text-white hover:underline">signup</a>
+        </div>
+    </nav>
+ 
+    <br><br>
+    <div class="md:ml-96 ml-0 ">
+    <div id="login" class=" justify-center" >
+        <form class="space-y-4">
+            <h1 id="name" class="tex-xl font-semibold">Signup</h1>
+            <label>User Name</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username">
+            <label>Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email">
+            <label>Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your Password">
+            <label>RE-Password</label>
+            <input type="password" id="repeatPassword" name="repeatPassword" placeholder="RE-Enter your Password">
+            <button type="submit" class="w-full">Login</button>
+        </form>
+
+    </div>
+</div>
+</body>
+</html>
