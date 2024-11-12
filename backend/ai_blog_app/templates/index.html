@@ -52,15 +52,34 @@
         <div >
             <h1 class="md:text-3xl md:font-bold text-xl ">AI Blog Generator</h1>
         </div>
-        <div>
-            <a href="#" class="text-white hover:underline">Logout</a>
-        </div>
+        {% if request.user.is_authenticated %}
+        
+               <div class="relative group">
+
+                   <a class="text-xl cursor-pointer items-center" id="userMenuToggle" href="{% url 'home'%}">
+                       <span class=" hidden md:inline">Welcome {{ request.user }} |</span>
+                   </a>
+                   <a class="text-xl cursor-pointer" href="{% url 'logout' %}">
+                    <span class="hidden md:inline">Logout</span>
+                   </a>
+
+                </div>
+                {% else %}
+                <div>
+                <a class="text-xl cursor-pointer" href="{% url 'login' %}">
+                    <span class="hidden md:inline">Login |</span>
+                </a>
+                <a class="text-xl cursor-pointer" href="{% url 'signup' %}">
+                    <span class="hidden md:inline">signup</span>
+                </a>
+                </div>
+                {% endif %}
     </nav>
     <!--Main-->
     <div>
         <div class="bg-white rounded-lg max-w-3xl mx-auto shadow-lg transition-transform transform hover:scale-110">
             <!--Introduction section-->
-            <div class="mt-10 text-center ">
+            <div class="mt-10 text-center "><br>
                 <h2 class="md:text-2xl font-semibold text-xl">Welcome to the AI Blog Genarator</h2>
                 <p class="pt-5 md:text-xl text-xs text-gray-800 p-5">It convet a video into text paragraph. There are lots of benifits for convert a video into text you can easily read a para. when travel time no video are watching  If you convet a text you easily read and understand and the content of video.</p>
             </div>
@@ -85,10 +104,51 @@
         </div>
     </div>
     <footer class="text-center mt-10 ">
-        Created By Abi
+        &copy; All Rights Reserved By Abi
     </footer>
     <script>
-
+        document.getElementById("generateBlog").addEventListener("click", function() {
+            const youtubeLink = document.getElementById("youtubelink").value;
+            const loadingCircle = document.getElementById("loding-circle");
+            const blogContent = document.getElementById("blogContent");
+    
+            if (!youtubeLink) {
+                alert("Please enter a YouTube link.");
+                return;
+            }
+    
+            // Show loading animation
+            loadingCircle.style.display = "block";
+            blogContent.innerHTML = ""; // Clear previous content
+    
+            // Send YouTube link to Django server using Fetch API
+            fetch("/generate-blog/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}", // Include CSRF token for Django
+                },
+                body: JSON.stringify({ link: youtubeLink }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loading animation
+                loadingCircle.style.display = "none";
+                
+                if (data.success) {
+                    // Display generated blog content
+                    blogContent.innerHTML = '<p>${data.blog_text}</p>';
+                } else {
+                    blogContent.innerHTML = "<p>Could not generate blog. Please try again.</p>";
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                loadingCircle.style.display = "none";
+                blogContent.innerHTML = "<p>Something went wrong. Please try again.</p>";
+            });
+        });
     </script>
+    
 </body>
 </html>
