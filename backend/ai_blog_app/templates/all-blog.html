@@ -10,7 +10,14 @@
 <body class="flex flex-col bg-gray-100">
     <nav class="bg-green-600 p-4 text-white flex justify-between ">
         <div >
+ 
             <a href="{% url 'home' %}"><h1 class="md:text-3xl md:font-bold text-xl">AI Blog Generator</h1></a>
+
+            <h1 class="md:text-3xl md:font-bold text-xl ">AI Blog Generator</h1>
+        </div>
+        <div>
+            <a href="logout" class="text-white hover:underline">Logout</a>
+ 
         </div>
         {% if request.user.is_authenticated %}
         
