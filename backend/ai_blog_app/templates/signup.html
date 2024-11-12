@@ -6,57 +6,6 @@
     <title>signup</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css">
 
-    <style>
-        #login{
-            
-            border:1px solid black;
-            width: 400px;
-            height: 600px;
-            color: rgb(0, 162, 0);
-            border-radius: 20px;
-            box-shadow: 0px 0px 20px rgba(0,0,0,0.75);
-        }
-        form{
-            display: block;
-            box-sizing: border-box;
-            padding: 40px;
-            width: 100%;
-             flex-direction: column;
-            display: flex;
-            gap: 2px;
-        }
-        #name{
-            font-weight: normal;
-            font-size: 24px;
-            text-shadow: 0px 0px 2px rgba(0,0,0,0.5);
-            margin-bottom: 20px;
-        }
-        label{
-            color: rgba(12, 180, 20, 0.8);
-            text-transform: uppercase;
-            font-size: 15px;
-            letter-spacing: 2px;
-           
-        }
-        input{
-            background: rgb(173, 208, 255);
-            height: 40px;
-            line-height: 40px;
-            border-radius: 10px; 
-        
-            
-
-        }
-        button{
-            background: rgb(26, 204, 118);
-            height: 40px;
-            line-height: 40px;
-            border-radius: 10px; 
-            box-shadow: 0px 0px 5px rgba(6, 124, 2, 0.3);
-            color: white;
-        }
-             
-    </style>
 </head>
 <body class="bg-gray-100 font-sans">
      <!--Nav Bar-->
@@ -66,28 +15,57 @@
             <h1 class="md:text-3xl md:font-bold text-xl ">AI Blog Generator</h1>
         </div>
         <div>
-            <a href="#" class="text-white hover:underline">login |</a>
-            <a href="#" class="text-white hover:underline">signup</a>
+            <a href="{% url 'login' %}" class="text-white hover:underline">login |</a>
+            <a href="{% url 'signup' %}" class="text-white hover:underline">signup</a>
         </div>
     </nav>
  
-    <br><br>
-    <div class="md:ml-96 ml-0 ">
-    <div id="login" class=" justify-center" >
-        <form class="space-y-4">
-            <h1 id="name" class="tex-xl font-semibold">Signup</h1>
-            <label>User Name</label>
-            <input type="text" id="username" name="username" placeholder="Enter your username">
-            <label>Email</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email">
-            <label>Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter your Password">
-            <label>RE-Password</label>
-            <input type="password" id="repeatPassword" name="repeatPassword" placeholder="RE-Enter your Password">
-            <button type="submit" class="w-full">Login</button>
-        </form>
+    <div id="register-form" class="flex items-center justify-center min-h-screen">
+        <div class="w-full max-w-md bg-white rounded-lg shadow-md p-8">
+          <h2 class="text-2xl font-semibold text-center text-gray-700 mb-6">Create an Account</h2>
+          
+          <!-- Registration Form -->
+          <form id="form" method="POST" action="">
+            {% csrf_token %}
+            <div class="mb-4">
+              <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+               {{form.username}}
+               {% if form.errors.username %}
+               <label class="text-danger">{{form.errors.username}} </label>
+               {% endif %}
 
-    </div>
-</div>
+            </div>
+    
+             
+            <div class="mb-4">
+              <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+              {{form.email}}
+              {% if form.errors.email %}
+               <label class="text-danger">{{form.errors.email}} </label>
+               {% endif %}
+            </div>
+    
+            
+            <div class="mb-4">
+              <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+               {{form.password1}}
+               {% if form.errors.password1 %}
+               <label class="text-danger">{{form.errors.password1}} </label>
+               {% endif %}
+            </div>
+     
+            <div class="mb-6">
+              <label for="confirm-password" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+              {{form.password2}}
+              {% if form.errors.password2 %}
+               <label class="text-danger">{{form.errors.password2}} </label>
+               {% endif %}  
+            </div>
+            
+             <button type="submit" class="w-full py-2 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300">Register</button>
+          </form>
+          <p >Alredy User? <a href="{% url 'login' %}">Login</a></p>
+        </div>
+      </div>
 </body>
 </html>

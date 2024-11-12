@@ -50,17 +50,36 @@
     <!--Nav Bar-->
     <nav class="bg-green-600 p-4 text-white flex justify-between ">
         <div >
-            <h1 class="md:text-3xl md:font-bold text-xl ">AI Blog Generator</h1>
+            <a href="{% url 'home' %}"><h1 class="md:text-3xl md:font-bold text-xl ">AI Blog Generator</h1></a>
         </div>
-        <div>
-            <a href="#" class="text-white hover:underline">Logout</a>
-        </div>
+        {% if request.user.is_authenticated %}
+        
+               <div class="relative group">
+
+                   <a class="text-xl cursor-pointer items-center" id="userMenuToggle" href="{% url 'home'%}">
+                       <span class=" hidden md:inline">Welcome {{ request.user }} |</span>
+                   </a>
+                   <a class="text-xl cursor-pointer" href="{% url 'logout' %}">
+                    <span class="hidden md:inline">Logout</span>
+                   </a>
+
+                </div>
+                {% else %}
+                <div>
+                <a class="text-xl cursor-pointer" href="{% url 'login' %}">
+                    <span class="hidden md:inline">Login |</span>
+                </a>
+                <a class="text-xl cursor-pointer" href="{% url 'signup' %}">
+                    <span class="hidden md:inline">signup</span>
+                </a>
+                </div>
+                {% endif %}
     </nav>
     <!--Main-->
     <div>
         <div class="bg-white rounded-lg max-w-3xl mx-auto shadow-lg transition-transform transform hover:scale-110">
             <!--Introduction section-->
-            <div class="mt-10 text-center ">
+            <div class="mt-10 text-center "><br>
                 <h2 class="md:text-2xl font-semibold text-xl">Welcome to the AI Blog Genarator</h2>
                 <p class="pt-5 md:text-xl text-xs text-gray-800 p-5">It convet a video into text paragraph. There are lots of benifits for convert a video into text you can easily read a para. when travel time no video are watching  If you convet a text you easily read and understand and the content of video.</p>
             </div>
@@ -85,10 +104,49 @@
         </div>
     </div>
     <footer class="text-center mt-10 ">
-        Created By Abi
+        &copy; All Rights Reserved By Abi
     </footer>
     <script>
-
+        document.getElementById('generateBlog').addEventListener('click', async () => {
+            const youtubeLink = document.getElementById('youtubelink').value;
+            const blogContent = document.getElementById('blogContent');
+    
+            if (youtubeLink) {
+                document.getElementById('loding-circle').style.display = 'block';
+                blogContent.innerHTML = ''; // Clear previous content
+    
+                const endpointUrl = '/generate-blog/'; // Make sure this URL matches your Django URL
+    
+                try {
+                    const response = await fetch(endpointUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({ link: youtubeLink })
+                    });
+    
+                    const data = await response.json();
+                    document.getElementById('loding-circle').style.display = 'none';
+    
+                    if (data.success) {
+                        blogContent.innerHTML = data.content; // Display the generated blog content
+                    } else {
+                        blogContent.innerHTML = `<p>${data.error || "Could not generate blog. Please try again."}</p>`;
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    document.getElementById('loding-circle').style.display = 'none';
+                    alert("Something went wrong. Please try again.");
+                }
+            } else {
+                alert("Please enter a valid YouTube link.");
+            }
+        });
     </script>
+    
+    
+    
 </body>
 </html>
